@@ -1,13 +1,15 @@
 
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { FaBars } from 'react-icons/fa';
-import { AuthProvider, useAuth } from '../../hooks/AuthContext';
-import { Logo } from '../../Logo/Logo';
+
+import { Logo } from '../../Component/Logo/Logo';
+import { useAuth } from '../../Component/hooks/AuthContext';
 
 
 
 const Navber = () => {
   const { user, logOut } = useAuth();
+  const location = useLocation();
   console.log(user)
 
   const handleLogout = async () => {
@@ -18,12 +20,30 @@ const Navber = () => {
     }
   };
 
+  // Function to handle smooth scrolling to sections
+  const scrollToSection = (sectionId) => {
+    // If we're not on the home page, navigate to home first
+    if (location.pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   const navLinks = (
     <>
       <li><NavLink to="/">Home</NavLink></li>
       <li><NavLink to="/courts">Courts</NavLink></li>
-      <li><NavLink to="/about">About</NavLink></li>
-      <li><NavLink to="/location">Location</NavLink></li>
+      <li><button onClick={() => scrollToSection('location')} className="hover:text-primary cursor-pointer">Location</button></li>
+      <li><button onClick={() => scrollToSection('promotions')} className="hover:text-primary cursor-pointer">Current Promotions</button></li>
+      <li><button onClick={() => scrollToSection('about')} className="hover:text-primary cursor-pointer">About</button></li>
     </>
   );
 

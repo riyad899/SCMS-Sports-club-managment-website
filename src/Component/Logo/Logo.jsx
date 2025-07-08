@@ -1,6 +1,5 @@
 import React from 'react'
-import LogoPng from '../Images/Logo.png'
-
+import LogoPng from '../../Images/Logo.png' // Adjust the path as necessary
 export const Logo = () => {
   return (
     <div>
