@@ -1,33 +1,24 @@
 // 📁 src/context/CouponsContext.jsx
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { UseaxiousSecure } from '../hooks/UseaxiousSecure';
 
 const CouponsContext = createContext();
 
 export const CouponsProvider = ({ children }) => {
   const axiosSecure = UseaxiousSecure();
-  const [coupons, setCoupons] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const [cardPage, setCardPage] = useState(1);
   const [tablePage, setTablePage] = useState(1);
   const cardPageSize = 6;
   const tablePageSize = 10;
 
-  useEffect(() => {
-    const fetchCoupons = async () => {
-      try {
-        const res = await axiosSecure.get('/coupons');
-        setCoupons(res.data);
-      } catch (err) {
-        console.error('Failed to fetch coupons:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCoupons();
-  }, [axiosSecure]);
+  const { data: coupons = [], isLoading: loading } = useQuery({
+    queryKey: ['coupons'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/coupons');
+      return res.data;
+    },
+  });
 
   const paginatedCardCoupons = coupons.slice(
     (cardPage - 1) * cardPageSize,
@@ -43,7 +34,6 @@ export const CouponsProvider = ({ children }) => {
     <CouponsContext.Provider
       value={{
         coupons,
-        setCoupons,
         loading,
         cardPage,
         setCardPage,

@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-
-
+import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../Component/hooks/AuthContext";
+import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
 
 const imgbbAPIKey = "88ed2c44b36d4368306e54cd85785522";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const axiosSecure = UseaxiousSecure();
 
   const [form, setForm] = useState({
     name: "",
@@ -21,6 +22,20 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Mutation for saving user data to database
+  const saveUserMutation = useMutation({
+    mutationFn: async (userData) => {
+      const response = await axiosSecure.post('/users', userData);
+      return response.data;
+    },
+    onSuccess: () => {
+      console.log('User data saved successfully');
+    },
+    onError: (error) => {
+      console.error('Error saving user data:', error);
+    }
+  });
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -83,6 +98,22 @@ const Register = () => {
         photoURL: imageUrl,
       });
 
+      // Prepare user data for database
+      const userData = {
+        name: name,
+        email: email,
+        password: password, // Note: You should hash this on the backend
+        role: "user",
+        isMember: false,
+        membershipDate: null,
+        profileImage: imageUrl,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      // Save user data to database
+      await saveUserMutation.mutateAsync(userData);
+
       // ✅ SweetAlert on success
       Swal.fire({
         icon: "success",
@@ -101,8 +132,34 @@ const Register = () => {
 
   const handleGoogleSignup = async () => {
     setError("");
+    setLoading(true);
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      // Check if user already exists in database
+      try {
+        const checkUserResponse = await axiosSecure.get(`/users/${user.email}`);
+        // If user exists, just login
+        console.log('User already exists in database');
+      } catch (error) {
+        // If user doesn't exist, create new user in database
+        if (error.response && error.response.status === 404) {
+          const userData = {
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            password: '', // Google users don't have password
+            role: "user",
+            isMember: false,
+            membershipDate: null,
+            profileImage: user.photoURL || '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+
+          await saveUserMutation.mutateAsync(userData);
+        }
+      }
 
       Swal.fire({
         icon: "success",
@@ -113,6 +170,8 @@ const Register = () => {
       navigate("/");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
