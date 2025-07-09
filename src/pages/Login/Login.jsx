@@ -38,13 +38,38 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      await signIn(form.email, form.password);
+      const result = await signIn(form.email, form.password);
+      const user = result.user;
+
+      // Check if user already exists in database
+      try {
+        const checkUserResponse = await axiosSecure.get(`/users/${user.email}`);
+        console.log('User already exists in database');
+      } catch (error) {
+        // If user doesn't exist, create new user in database
+        if (error.response && error.response.status === 404) {
+          const userData = {
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            password: '', // Don't store password for security
+            role: "user",
+            isMember: false,
+            membershipDate: null,
+            profileImage: user.photoURL || '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+
+          await saveUserMutation.mutateAsync(userData);
+        }
+      }
+
       await Swal.fire({
         icon: "success",
         title: "Login Successful!",
         confirmButtonColor: "#162E50",
       });
-      navigate(from, { replace: true }); // Redirect to last route or dashboard
+      navigate("/", { replace: true }); // Always redirect to home page after login
     } catch (err) {
       setError(err.message);
     }
@@ -85,7 +110,7 @@ const Login = () => {
         title: "Logged in with Google!",
         confirmButtonColor: "#162E50",
       });
-      navigate(from, { replace: true }); // Same here for Google login
+      navigate("/", { replace: true }); // Always redirect to home page after login
     } catch (err) {
       setError(err.message);
     }

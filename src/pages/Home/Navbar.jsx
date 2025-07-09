@@ -10,7 +10,7 @@ import { useAuth } from '../../Component/hooks/AuthContext';
 const Navber = () => {
   const { user, logOut } = useAuth();
   const location = useLocation();
-  console.log(user)
+
 
   const handleLogout = async () => {
     try {
@@ -44,6 +44,7 @@ const Navber = () => {
       <li><button onClick={() => scrollToSection('location')} className="hover:text-primary cursor-pointer">Location</button></li>
       <li><button onClick={() => scrollToSection('promotions')} className="hover:text-primary cursor-pointer">Current Promotions</button></li>
       <li><button onClick={() => scrollToSection('about')} className="hover:text-primary cursor-pointer">About</button></li>
+
     </>
   );
 
