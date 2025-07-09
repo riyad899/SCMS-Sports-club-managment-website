@@ -14,6 +14,7 @@ import PrivateRoute from "./PrivateRoute";
 import { Profile } from "../Component/Dashboard/DashboardInfo/Profile";
 import { PendingBookings } from "../Component/Dashboard/DashboardInfo/PendingBookings";
 import { Announcements } from "../Component/Dashboard/DashboardInfo/Announcements";
+import { Pendingbooks } from "../Component/Dashboard/AdminSidebar/Pendingbooks";
 
 
 
@@ -103,6 +104,10 @@ export const router = createBrowserRouter([
               {
                 path: "announcements",
                 element: <Announcements />,
+              },
+              {
+                path: "manage-booking-requests",
+                element: <Pendingbooks />,
               },
             ],
           },

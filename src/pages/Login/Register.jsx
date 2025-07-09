@@ -139,12 +139,12 @@ const Register = () => {
 
       // Check if user already exists in database
       try {
-        const checkUserResponse = await axiosSecure.get(`/users/${user.email}`);
-        // If user exists, just login
+        const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
         console.log('User already exists in database');
       } catch (error) {
-        // If user doesn't exist, create new user in database
-        if (error.response && error.response.status === 404) {
+        // If user doesn't exist or error occurred, create new user in database
+        if (error.response && (error.response.status === 404 || error.response.status === 500)) {
+          console.log('Creating new user in database...');
           const userData = {
             name: user.displayName || user.email.split('@')[0],
             email: user.email,
@@ -157,13 +157,21 @@ const Register = () => {
             updatedAt: new Date().toISOString()
           };
 
-          await saveUserMutation.mutateAsync(userData);
+          try {
+            await saveUserMutation.mutateAsync(userData);
+            console.log('Google user saved to database successfully');
+          } catch (saveError) {
+            console.error('Error saving Google user to database:', saveError);
+            // Don't block registration if database save fails
+          }
+        } else {
+          console.error('Unexpected error checking user:', error);
         }
       }
 
       Swal.fire({
         icon: "success",
-        title: "Logged in with Google!",
+        title: "Registered with Google!",
         confirmButtonColor: "#162E50",
       });
 
