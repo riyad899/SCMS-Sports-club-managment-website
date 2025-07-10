@@ -24,6 +24,7 @@ import { PendingBookMem } from "../Component/Dashboard/MemberSidebar/PendingBook
 import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
 import { PaymentHistory } from "../Component/Dashboard/MemberSidebar/PaymentHistory/PaymentHistory";
 import { ConfirmedBookings } from "../Component/Dashboard/AdminSidebar/ConfirmedBookings";
+import { AprovedBooking } from "../Component/Dashboard/MemberSidebar/AprovedBooking";
 
 
 
@@ -96,13 +97,21 @@ export const router = createBrowserRouter([
                 path: "announcements",
                 element: <Announcements />,
               },
-                  {
+              {
                 path: "payment-page",
                 element: <PaymentPage />,
               },
-                  {
+              {
                 path: "payment-history",
                 element: <PaymentHistory />,
+              },
+                {
+                path: "approved-bookings",
+                element: <AprovedBooking />,
+              },
+              {
+                path: "confirmed-bookings",
+                element: <ConfirmedBookings />,
               },
             ],
           },
@@ -114,7 +123,7 @@ export const router = createBrowserRouter([
                 path: "profile",
                 element: <Profile />,
               },
-               {
+              {
                 path: "confirmed-bookings",
                 element: <ConfirmedBookings />,
               },
@@ -130,19 +139,19 @@ export const router = createBrowserRouter([
                 path: "manage-booking-requests",
                 element: <Pendingbooks />,
               },
-                {
+              {
                 path: "manage-members",
                 element: <ManageMembers />,
               },
-                 {
+              {
                 path: "all-users",
                 element: <AllUsers />,
               },
-                  {
+              {
                 path: "manage-courts",
                 element: <ManageCourt />,
               },
-                   {
+              {
                 path: "manage-coupons",
                 element: <ManageCoupons />,
               },
