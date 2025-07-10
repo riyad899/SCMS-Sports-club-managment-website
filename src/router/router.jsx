@@ -20,6 +20,8 @@ import { AllUsers } from "../Component/Dashboard/AdminSidebar/AllUsers";
 import { ManageCourt } from "../Component/Dashboard/AdminSidebar/ManageCourt";
 import ManageCoupons from "../Component/Dashboard/AdminSidebar/ManageCupon,";
 import { ManageAnnouncement } from "../Component/Dashboard/AdminSidebar/ManageAnnouncement";
+import { PendingBookMem } from "../Component/Dashboard/MemberSidebar/PendingBookMem";
+import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
 
 
 
@@ -86,11 +88,15 @@ export const router = createBrowserRouter([
               },
               {
                 path: "pending-bookings",
-                element: <PendingBookings />,
+                element: <PendingBookMem />,
               },
               {
                 path: "announcements",
                 element: <Announcements />,
+              },
+                  {
+                path: "payment-page",
+                element: <PaymentPage />,
               },
             ],
           },

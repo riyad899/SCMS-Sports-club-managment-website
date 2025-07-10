@@ -10,35 +10,81 @@ export const MemberDashboard = () => {
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#162E50] text-white p-6 space-y-4">
+      <aside className="w-64 bg-[#ffffff] text-[#162E50] p-6 space-y-4 border-r border-gray-200">
         <h2 className="text-xl font-bold mb-6">Member Dashboard</h2>
-        <nav className="space-y-2">
+        <nav className="space-y-3">
           <NavLink
             to="profile"
             className={({ isActive }) =>
               isActive
-                ? 'block px-4 py-2 bg-white text-[#162E50] rounded-md font-semibold'
-                : 'block px-4 py-2 hover:bg-white hover:text-[#162E50] rounded-md'
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
             }
           >
             My Profile
           </NavLink>
+
           <NavLink
             to="pending-bookings"
             className={({ isActive }) =>
               isActive
-                ? 'block px-4 py-2 bg-white text-[#162E50] rounded-md font-semibold'
-                : 'block px-4 py-2 hover:bg-white hover:text-[#162E50] rounded-md'
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
             }
           >
             Pending Bookings
           </NavLink>
+
+          <NavLink
+            to="approved-bookings"
+            className={({ isActive }) =>
+              isActive
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
+            }
+          >
+           Approved Bookings
+          </NavLink>
+
+          <NavLink
+            to="confirmed-bookings"
+            className={({ isActive }) =>
+              isActive
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
+            }
+          >
+            Confirmed Bookings
+          </NavLink>
+
+          <NavLink
+            to="payment-page"
+            className={({ isActive }) =>
+              isActive
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
+            }
+          >
+            Payment Page
+          </NavLink>
+
+          <NavLink
+            to="payment-history"
+            className={({ isActive }) =>
+              isActive
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
+            }
+          >
+            Payment History
+          </NavLink>
+
           <NavLink
             to="announcements"
             className={({ isActive }) =>
               isActive
-                ? 'block px-4 py-2 bg-white text-[#162E50] rounded-md font-semibold'
-                : 'block px-4 py-2 hover:bg-white hover:text-[#162E50] rounded-md'
+                ? 'block px-4 py-3 bg-[#162E50] border border-white/30 backdrop-blur-sm text-white rounded-md font-semibold shadow-lg transition-all duration-300'
+                : 'block px-4 py-3 border border-white/50 backdrop-blur-sm hover:bg-[#162E50] hover:text-white hover:border-white/70 rounded-md transition-all duration-300 hover:shadow-md'
             }
           >
             Announcements
