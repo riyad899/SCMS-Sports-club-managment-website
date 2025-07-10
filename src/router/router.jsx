@@ -22,6 +22,7 @@ import ManageCoupons from "../Component/Dashboard/AdminSidebar/ManageCupon,";
 import { ManageAnnouncement } from "../Component/Dashboard/AdminSidebar/ManageAnnouncement";
 import { PendingBookMem } from "../Component/Dashboard/MemberSidebar/PendingBookMem";
 import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
+import { PaymentHistory } from "../Component/Dashboard/MemberSidebar/PaymentHistory/PaymentHistory";
 
 
 
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
                   {
                 path: "payment-page",
                 element: <PaymentPage />,
+              },
+                  {
+                path: "payment-history",
+                element: <PaymentHistory />,
               },
             ],
           },

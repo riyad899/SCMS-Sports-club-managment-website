@@ -55,6 +55,13 @@ export const PaymentPage = () => {
 
     const bookings = Array.isArray(bookingsData) ? bookingsData : [];
 
+    // Handle payment success
+    const handlePaymentSuccess = (bookingId) => {
+        // Refetch the bookings to get updated payment status
+        refetch();
+        setSelectedBooking(null); // Navigate back to payment page
+    };
+
     // Error state
     if (error) {
         return (
@@ -148,9 +155,15 @@ export const PaymentPage = () => {
                                         <div className="text-lg font-bold text-green-600 mb-2">
                                             Tk{booking.price || 0}
                                         </div>
-                                        <button className="btn btn-primary btn-sm">
-                                            Pay Now →
-                                        </button>
+                                        {booking.paymentStatus === 'paid' ? (
+                                            <button className="btn btn-success btn-sm" disabled>
+                                                ✓ Paid
+                                            </button>
+                                        ) : (
+                                            <button className="btn btn-primary btn-sm">
+                                                Pay Now →
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +184,10 @@ export const PaymentPage = () => {
                         ← Back to Bookings
                     </button>
                 </div>
-                <CheckoutForm selectedBooking={selectedBooking} />
+                <CheckoutForm
+                    selectedBooking={selectedBooking}
+                    onPaymentSuccess={handlePaymentSuccess}
+                />
             </div>
         </Elements>
     );

@@ -31,6 +31,7 @@ const CourtBookingModal = ({ court, setSelectedCourt }) => {
       date,
       price: court.price * selectedSlots.length,
       status: "pending",
+      payment: "not_paid",
     };
 
     try {
