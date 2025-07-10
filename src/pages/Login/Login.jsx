@@ -7,7 +7,7 @@ import { useAuth } from "../../Component/hooks/AuthContext";
 import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
 
 const Login = () => {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, logOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -41,26 +41,23 @@ const Login = () => {
       const result = await signIn(form.email, form.password);
       const user = result.user;
 
-      // Check if user already exists in database
+      // Check if user exists in database - REQUIRED for login
       try {
-        const checkUserResponse = await axiosSecure.get(`/users/${user.email}`);
-        console.log('User already exists in database');
+        const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
+        console.log('User exists in database, login allowed');
       } catch (error) {
-        // If user doesn't exist, create new user in database
+        // If user doesn't exist in database, deny login
         if (error.response && error.response.status === 404) {
-          const userData = {
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            password: '', // Don't store password for security
-            role: "user",
-            isMember: false,
-            membershipDate: null,
-            profileImage: user.photoURL || '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-
-          await saveUserMutation.mutateAsync(userData);
+          // Sign out the user from Firebase
+          await logOut();
+          setError("Account not found in our system. Please contact administrator or register first.");
+          return;
+        } else {
+          // Handle other errors
+          console.error('Error checking user in database:', error);
+          await logOut();
+          setError("Unable to verify account. Please try again later.");
+          return;
         }
       }
 
@@ -81,35 +78,22 @@ const Login = () => {
       const result = await signInWithGoogle();
       const user = result.user;
 
-      // Check if user already exists in database
+      // Check if user exists in database - REQUIRED for login
       try {
         const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
-        console.log('User already exists in database');
+        console.log('Google user exists in database, login allowed');
       } catch (error) {
-        // If user doesn't exist or error occurred, create new user in database
+        // If user doesn't exist in database, deny login
         if (error.response && (error.response.status === 404 || error.response.status === 500)) {
-          console.log('Creating new user in database...');
-          const userData = {
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            password: '', // Google users don't have password
-            role: "user",
-            isMember: false,
-            membershipDate: null,
-            profileImage: user.photoURL || '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-
-          try {
-            await saveUserMutation.mutateAsync(userData);
-            console.log('Google user saved to database successfully');
-          } catch (saveError) {
-            console.error('Error saving Google user to database:', saveError);
-            // Don't block login if database save fails
-          }
+          // Sign out the user from Firebase
+          await logOut();
+          setError("Account not found in our system. Please use 'Register with Google' to create an account first.");
+          return;
         } else {
           console.error('Unexpected error checking user:', error);
+          await logOut();
+          setError("Unable to verify account. Please try again later.");
+          return;
         }
       }
 

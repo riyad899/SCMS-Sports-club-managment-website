@@ -5,8 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../Component/hooks/AuthContext";
 import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
-
-const imgbbAPIKey = "88ed2c44b36d4368306e54cd85785522";
+import { uploadToCloudinary } from "../../utils/cloudinaryUpload";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
@@ -50,22 +49,22 @@ const Register = () => {
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(",")[1]); // only base64 part
+      reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
 
-  const uploadImageToImgbb = async (base64Img) => {
-    const formData = new FormData();
-    formData.append("image", base64Img);
-
-    const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await res.json();
-    if (data.success) return data.data.url;
-    throw new Error("Image upload failed");
+  const uploadImageToCloudinary = async (imageFile) => {
+    try {
+      const result = await uploadToCloudinary(imageFile);
+      if (result.success) {
+        return result.url;
+      } else {
+        throw new Error(result.error?.message || 'Cloudinary upload failed');
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+      throw new Error('Failed to upload image. Please try again.');
+    }
   };
 
   const handleRegister = async (e) => {
@@ -88,8 +87,17 @@ const Register = () => {
     }
 
     try {
-      const base64Img = await convertToBase64(image);
-      const imageUrl = await uploadImageToImgbb(base64Img);
+      let imageUrl = "";
+
+      if (image) {
+        try {
+          imageUrl = await uploadImageToCloudinary(image);
+        } catch (uploadError) {
+          console.warn('Cloudinary upload failed, using fallback:', uploadError.message);
+          // Fallback to base64 if Cloudinary fails
+          imageUrl = await convertToBase64(image);
+        }
+      }
 
       const userCred = await createUser(email, password);
 

@@ -67,7 +67,7 @@ export const AdminDashboard = () => {
             <TicketPercent className="inline-block mr-2" /> Manage Coupons
           </NavLink>
 
-          <NavLink to="announcements" className={({ isActive }) =>
+          <NavLink to="announcements-admin" className={({ isActive }) =>
               isActive ? 'text-[#162E50] font-semibold' : 'text-gray-600'
             }>
             <Megaphone className="inline-block mr-2" /> Announcements
