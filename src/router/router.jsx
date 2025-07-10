@@ -23,6 +23,7 @@ import { ManageAnnouncement } from "../Component/Dashboard/AdminSidebar/ManageAn
 import { PendingBookMem } from "../Component/Dashboard/MemberSidebar/PendingBookMem";
 import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
 import { PaymentHistory } from "../Component/Dashboard/MemberSidebar/PaymentHistory/PaymentHistory";
+import { ConfirmedBookings } from "../Component/Dashboard/AdminSidebar/ConfirmedBookings";
 
 
 
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
               {
                 path: "profile",
                 element: <Profile />,
+              },
+               {
+                path: "confirmed-bookings",
+                element: <ConfirmedBookings />,
               },
               {
                 path: "pending-bookings",
