@@ -25,6 +25,7 @@ import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
 import { PaymentHistory } from "../Component/Dashboard/MemberSidebar/PaymentHistory/PaymentHistory";
 import { ConfirmedBookings } from "../Component/Dashboard/AdminSidebar/ConfirmedBookings";
 import { AprovedBooking } from "../Component/Dashboard/MemberSidebar/AprovedBooking";
+import Error from "../pages/Error/Error";
 
 
 
@@ -33,9 +34,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     Component: Rootlayout,
+    errorElement: <Error />,
     children: [
       {
-
         index: true,
         Component: Home
       },
@@ -49,11 +50,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/courts",
-        element: (
-          <PrivateRoute>
-            <Courts />
-          </PrivateRoute>
-        ),
+        element: <Courts />
       },
       {
         path: "/dashboard",
@@ -158,8 +155,12 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      // Catch-all route for unmatched paths
+      {
+        path: "*",
+        element: <Error />
       }
-
     ]
   },
 ]);

@@ -1,12 +1,12 @@
 // 📁 src/context/CouponsContext.jsx
 import { createContext, useContext, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../hooks/UseaxiousSecure';
+import {  UseAxiosPublic } from '../hooks/UseAxiosPublic';
 
 const CouponsContext = createContext();
 
 export const CouponsProvider = ({ children }) => {
-  const axiosSecure = UseaxiousSecure();
+ const axiosSecure = UseAxiosPublic();
   const [cardPage, setCardPage] = useState(1);
   const [tablePage, setTablePage] = useState(1);
   const cardPageSize = 6;

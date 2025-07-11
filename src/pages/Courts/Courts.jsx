@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 
 import { useAuth } from "../../Component/hooks/AuthContext";
-import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
+
+import { UseAxiosPublic } from "../../Component/hooks/UseAxiosPublic";
 import CourtBookingModal from "../../Component/CourtBookingModal/CourtBookingModal";
 import Loading from "../../Component/Loading/Loading";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 const Courts = () => {
   const [courts, setCourts] = useState([]);
@@ -16,7 +17,8 @@ const Courts = () => {
 
   const { user } = useAuth();
   const navigate = useNavigate();
-  const axiosSecure = UseaxiousSecure();
+  const location = useLocation();
+  const axiosSecure = UseAxiosPublic();
 
   // Pagination settings
   const cardPageSize = 6;
@@ -101,12 +103,17 @@ const Courts = () => {
                 <p className="text-gray-600">Price: Tk{court.price} per session</p>
                 <p className="text-gray-600">Available Slots: {court.slots.join(", ")}</p>
                 <button
-                  onClick={() =>
-                    user ? setSelectedCourt(court) : navigate("/login")
-                  }
+                  onClick={() => {
+                    if (user) {
+                      setSelectedCourt(court);
+                    } else {
+                      // Store current location to redirect back after login
+                      navigate("/login", { state: { from: location } });
+                    }
+                  }}
                   className="btn bg-[#162E50] text-white w-full mt-3 hover:bg-[#1c3a66]"
                 >
-                  Book Now
+                  {user ? "Book Now" : "Login to Book"}
                 </button>
               </div>
             </div>
@@ -154,12 +161,17 @@ const Courts = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
-                      onClick={() =>
-                        user ? setSelectedCourt(court) : navigate("/login")
-                      }
+                      onClick={() => {
+                        if (user) {
+                          setSelectedCourt(court);
+                        } else {
+                          // Store current location to redirect back after login
+                          navigate("/login", { state: { from: location } });
+                        }
+                      }}
                       className="btn bg-[#162E50] text-white px-4 py-2 rounded hover:bg-[#1c3a66]"
                     >
-                      Book Now
+                      {user ? "Book Now" : "Login to Book"}
                     </button>
                   </td>
                 </tr>
