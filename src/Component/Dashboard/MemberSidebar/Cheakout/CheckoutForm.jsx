@@ -18,7 +18,7 @@ export const CheckoutForm = ({ selectedBooking, onPaymentSuccess }) => {
     useEffect(() => {
         const fetchCoupons = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/coupons/all');
+                const response = await axios.get('https://sports-club-backend-mwe3s4o3v-riyad899s-projects.vercel.app/coupons/all');
                 setCoupons(response.data);
             } catch (error) {
                 console.error('Failed to fetch coupons:', error);
@@ -165,7 +165,7 @@ export const CheckoutForm = ({ selectedBooking, onPaymentSuccess }) => {
                 console.log('Booking:', booking);
 
                 try {
-                    const res = await axios.post('http://localhost:5000/payments', {
+                    const res = await axios.post('https://sports-club-backend-mwe3s4o3v-riyad899s-projects.vercel.app/payments', {
                         email,
                         cardId,
                         payment_status,
