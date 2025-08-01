@@ -1,16 +1,19 @@
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../Component/hooks/AuthContext";
-import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
+
 import { uploadToCloudinary } from "../../utils/cloudinaryUpload";
+import { UseaxiosPublic } from "../../Component/hooks/UseAxiosPublic";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
+  const axiosPublic = UseaxiosPublic();
 
   const [form, setForm] = useState({
     name: "",
@@ -21,11 +24,13 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Mutation for saving user data to database
   const saveUserMutation = useMutation({
     mutationFn: async (userData) => {
-      const response = await axiosSecure.post('/users', userData);
+      const response = await axiosPublic.post('/users', userData);
       return response.data;
     },
     onSuccess: () => {
@@ -120,7 +125,22 @@ const Register = () => {
       };
 
       // Save user data to database
-      await saveUserMutation.mutateAsync(userData);
+      try {
+        console.log('Attempting to save user data:', userData);
+        await saveUserMutation.mutateAsync(userData);
+        console.log('User data saved successfully to database');
+      } catch (dbError) {
+        console.error('Database save error:', dbError);
+        // Show a warning but don't block the registration
+        Swal.fire({
+          icon: "warning",
+          title: "Registration Successful!",
+          text: "Account created but there was an issue saving to database. Please contact support if you experience issues.",
+          confirmButtonColor: "#162E50",
+        });
+        navigate("/");
+        return;
+      }
 
       // ✅ SweetAlert on success
       Swal.fire({
@@ -147,7 +167,7 @@ const Register = () => {
 
       // Check if user already exists in database
       try {
-        const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
+        const checkUserResponse = await axiosPublic.get(`/users?email=${user.email}`);
         console.log('User already exists in database');
       } catch (error) {
         // If user doesn't exist or error occurred, create new user in database
@@ -237,26 +257,48 @@ const Register = () => {
 
           <div>
             <label className="label"><span className="label-text">Password</span></label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                className="input input-bordered w-full pr-10"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                onClick={() => setShowPassword((prev) => !prev)}
+                tabIndex={-1}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="label"><span className="label-text">Confirm Password</span></label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                className="input input-bordered w-full pr-10"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                tabIndex={-1}
+                aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           <button

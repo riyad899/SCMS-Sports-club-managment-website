@@ -1,11 +1,11 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 export const ManageMembers = () => {
-     const axiosSecure = UseaxiousSecure();
+     const axiosSecure = UseaxiosPublic();
   const [search, setSearch] = useState('');
 
   const {

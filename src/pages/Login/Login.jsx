@@ -1,174 +1,222 @@
-import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate, useLocation } from "react-router"; // <-- useLocation added
-import { useMutation } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import { useAuth } from "../../Component/hooks/AuthContext";
-import { UseaxiousSecure } from "../../Component/hooks/UseaxiousSecure";
+import React, { useState } from 'react';
+import { useAuth } from '../../Component/hooks/AuthContext';
+import { Link, useNavigate, useLocation } from 'react-router';
+import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
-const Login = () => {
-  const { signIn, signInWithGoogle, logOut } = useAuth();
+export const Login = () => {
+  const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-  const axiosSecure = UseaxiousSecure();
 
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-
-  // Mutation for saving user data to database
-  const saveUserMutation = useMutation({
-    mutationFn: async (userData) => {
-      const response = await axiosSecure.post('/users', userData);
-      return response.data;
-    },
-    onSuccess: () => {
-      console.log('User data saved successfully');
-    },
-    onError: (error) => {
-      console.error('Error saving user data:', error);
-    }
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Redirect to intended page after login
+  const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setLoading(true);
+    setError('');
+
     try {
-      const result = await signIn(form.email, form.password);
-      const user = result.user;
+      await signIn(formData.email, formData.password);
 
-      // Check if user exists in database - REQUIRED for login
-      try {
-        const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
-        console.log('User exists in database, login allowed');
-      } catch (error) {
-        // If user doesn't exist in database, deny login
-        if (error.response && error.response.status === 404) {
-          // Sign out the user from Firebase
-          await logOut();
-          setError("Account not found in our system. Please contact administrator or register first.");
-          return;
-        } else {
-          // Handle other errors
-          console.error('Error checking user in database:', error);
-          await logOut();
-          setError("Unable to verify account. Please try again later.");
-          return;
-        }
-      }
-
-      await Swal.fire({
-        icon: "success",
-        title: "Login Successful!",
-        confirmButtonColor: "#162E50",
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Successful!',
+        text: 'Welcome back!',
+        timer: 2000,
+        showConfirmButton: false
       });
-      navigate("/", { replace: true }); // Always redirect to home page after login
-    } catch (err) {
-      setError(err.message);
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
-    setError("");
+    setLoading(true);
+    setError('');
+
     try {
-      const result = await signInWithGoogle();
-      const user = result.user;
+      await signInWithGoogle();
 
-      // Check if user exists in database - REQUIRED for login
-      try {
-        const checkUserResponse = await axiosSecure.get(`/users?email=${user.email}`);
-        console.log('Google user exists in database, login allowed');
-      } catch (error) {
-        // If user doesn't exist in database, deny login
-        if (error.response && (error.response.status === 404 || error.response.status === 500)) {
-          // Sign out the user from Firebase
-          await logOut();
-          setError("Account not found in our system. Please use 'Register with Google' to create an account first.");
-          return;
-        } else {
-          console.error('Unexpected error checking user:', error);
-          await logOut();
-          setError("Unable to verify account. Please try again later.");
-          return;
-        }
-      }
-
-      await Swal.fire({
-        icon: "success",
-        title: "Logged in with Google!",
-        confirmButtonColor: "#162E50",
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Successful!',
+        text: 'Welcome back!',
+        timer: 2000,
+        showConfirmButton: false
       });
-      navigate("/", { replace: true }); // Always redirect to home page after login
-    } catch (err) {
-      setError(err.message);
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error('Google login error:', error);
+      setError(getErrorMessage(error.code));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'No account found with this email address.';
+      case 'auth/wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled.';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later.';
+      case 'auth/popup-closed-by-user':
+        return 'Google login was cancelled.';
+      default:
+        return 'Login failed. Please check your credentials and try again.';
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f0f4f8]">
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-[#162E50] mb-6">Login</h2>
-
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary w-full bg-[#162E50] border-none hover:bg-[#1c3a66]"
-          >
-            Login
-          </button>
-        </form>
-
-        {/* Google Login Button */}
-        <div className="mt-4">
-          <button
-            onClick={handleGoogleLogin}
-            className="btn w-full flex items-center justify-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-100 mt-2"
-          >
-            <FcGoogle className="text-xl" />
-            Continue with Google
-          </button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{' '}
+            <Link
+              to="/register"
+              className="font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              create a new account
+            </Link>
+          </p>
         </div>
 
-        <p className="text-sm mt-4 text-center">
-          Don’t have an account?{" "}
-          <Link to="/register" className="text-[#162E50] font-semibold hover:underline">
-            Register
-          </Link>
-        </p>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                placeholder="Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                ) : (
+                  <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Signing in...
+                </div>
+              ) : (
+                'Sign in'
+              )}
+            </button>
+          </div>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <FaGoogle className="h-5 w-5 text-red-500 mr-2" />
+                Sign in with Google
+              </button>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );

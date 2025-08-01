@@ -1,12 +1,12 @@
 
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { UseaxiousSecure } from "../hooks/UseaxiousSecure";
+import { UseaxiosPublic } from "../hooks/UseAxiosPublic";
 import { useAuth } from "../hooks/AuthContext";
 
 const CourtBookingModal = ({ court, setSelectedCourt }) => {
   const { user } = useAuth();
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
 
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [date, setDate] = useState("");

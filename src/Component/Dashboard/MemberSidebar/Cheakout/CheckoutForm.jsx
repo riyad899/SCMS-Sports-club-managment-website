@@ -1,13 +1,13 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { useState, useEffect } from 'react'
-import { UseaxiousSecure } from '../../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../../hooks/UseAxiosPublic';
 import { useAuth } from '../../../hooks/AuthContext';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 export const CheckoutForm = ({ selectedBooking, onPaymentSuccess }) => {
     const stripe = useStripe();
     const elements = useElements();
-    const axiosSecure = UseaxiousSecure();
+    const axiosSecure = UseaxiosPublic();
     const { user } = useAuth();
     const [coupons, setCoupons] = useState([]);
     const [couponCode, setCouponCode] = useState('');

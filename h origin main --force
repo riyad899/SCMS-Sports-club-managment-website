@@ -1,0 +1,83 @@
+[33mcommit 22a4aa4f2b1fc530d87138a7b534919ad0f077fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 15:53:20 2025 +0600
+
+    server deploy done
+
+[33mcommit be5bedda4c7ca1a49a69551f0bcdae210be7ed21[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 15:43:30 2025 +0600
+
+    final commit
+
+[33mcommit f58a4ae9217e8d5d51609cf1a858332d852c8314[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 05:44:08 2025 +0600
+
+    All routes done
+
+[33mcommit 741a46415b190e528f8ade735b924e66541dc9b4[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 05:04:06 2025 +0600
+
+     Payment aproved on admin done
+
+[33mcommit 58cd583fbf43da056ee611cedec0c7660fd235ce[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 04:47:41 2025 +0600
+
+    payment history done
+
+[33mcommit 96a0aed220e729e7190d9214f0f9ab59b7e918ae[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Fri Jul 11 03:30:45 2025 +0600
+
+    Payment done
+
+[33mcommit d160fa3868b8e836b702b694d78b24e1a1cab9d0[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Thu Jul 10 21:17:03 2025 +0600
+
+    Coudenary erpalced with imgBB
+
+[33mcommit 6f493d04c55b5e3e3e6e1b053f8ac2f266e66b79[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Thu Jul 10 01:07:11 2025 +0600
+
+    member aprove ny admin addded
+
+[33mcommit 034327f374a395c52f5336562e41e28e51c36cdf[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Wed Jul 9 06:04:52 2025 +0600
+
+    Admin dashbaord ADded
+
+[33mcommit 1139357cf1f266276b2e8a21194349c324f89d0c[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Wed Jul 9 01:47:39 2025 +0600
+
+    User is sending to the db
+
+[33mcommit b409adf7aa461e32d98a040ef2f546020eeb983c[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Wed Jul 9 01:11:41 2025 +0600
+
+    Home page setup done
+
+[33mcommit ccf507f31f0929b03c5f108da4d94b8e4c3b4c8e[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Tue Jul 8 03:52:16 2025 +0600
+
+    Navbar and footer done
+
+[33mcommit e7fca3817019df968df5ef30b73c5f375cf2060f[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Tue Jul 8 02:22:15 2025 +0600
+
+    Route setup done
+
+[33mcommit ce73fe49bb5f1dc3684470d6c595a4dddcff5a33[m
+Author: riyad899 <raditkhanyt@gmail.com>
+Date:   Tue Jul 8 00:14:48 2025 +0600
+
+    first commit

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/AuthContext';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import Loading from '../../Loading/Loading';
 import Swal from 'sweetalert2';
 import { loadStripe } from '@stripe/stripe-js';
@@ -16,7 +16,7 @@ const stripePromise = loadStripe(stripeKey);
 export const PaymentPage = () => {
 
     const { user } = useAuth();
-    const axiosSecure = UseaxiousSecure();
+    const axiosSecure = UseaxiosPublic();
     const [selectedBooking, setSelectedBooking] = useState(null);
 
     const { data: bookingsData = [], isLoading, error, refetch } = useQuery({

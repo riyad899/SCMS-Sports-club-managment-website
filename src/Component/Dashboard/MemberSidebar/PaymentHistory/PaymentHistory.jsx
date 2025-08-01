@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { UseaxiousSecure } from "../../../hooks/UseaxiousSecure";
+import { UseaxiosPublic } from "../../../hooks/UseAxiosPublic";
 import { useAuth } from "../../../hooks/AuthContext";
 
 export const PaymentHistory = () => {
     const { user } = useAuth();
-    const axiosSecure = UseaxiousSecure();
+    const axiosSecure = UseaxiosPublic();
   const [approvedBookings, setApprovedBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'paid', 'unpaid'

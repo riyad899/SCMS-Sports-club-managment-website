@@ -3,11 +3,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Loading from '../../Loading/Loading';
 import Swal from 'sweetalert2';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 
 export const Pendingbooks = () => {
 
-     const axiosSecure = UseaxiousSecure();
+     const axiosSecure = UseaxiosPublic();
   const queryClient = useQueryClient();
 
   // Fetch pending bookings

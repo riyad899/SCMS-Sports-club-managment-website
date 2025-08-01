@@ -1,7 +1,7 @@
 import axios from 'axios'
 const axiosPublic = axios.create({
-    baseURL:`https://sports-club-backend-mwe3s4o3v-riyad899s-projects.vercel.app`
+    baseURL:`https://sports-kappa.vercel.app`
 })
-export const UseAxiosPublic = () => {
+export const UseaxiosPublic = () => {
   return axiosPublic;
 }

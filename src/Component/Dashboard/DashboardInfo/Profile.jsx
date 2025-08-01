@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/AuthContext';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import Loading from '../../Loading/Loading';
 
 export const Profile = () => {
 const { user } = useAuth();
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
 
   const { data: currentUserData, isLoading } = useQuery({
     queryKey: ['user', user?.email],

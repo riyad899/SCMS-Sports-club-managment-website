@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import { useAuth } from '../../hooks/AuthContext';
 import Loading from '../../Loading/Loading';
 import Swal from 'sweetalert2';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 export const PendingBookings = () => {
 
 const { user } = useAuth();
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const queryClient = useQueryClient();
 
   const { data: bookings = [], isLoading } = useQuery({

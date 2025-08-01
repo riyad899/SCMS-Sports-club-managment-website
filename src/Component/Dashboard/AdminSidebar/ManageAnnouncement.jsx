@@ -1,12 +1,12 @@
 // 📁 src/Component/Dashboard/AdminSidebar/ManageAnnouncement.jsx
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Loading from '../../Loading/Loading';
 
 export const ManageAnnouncement = () => {
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ title: '', message: '' });

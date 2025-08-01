@@ -1,13 +1,13 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import Loading from '../../Loading/Loading';
 
 
 
 export const Announcements = () => {
 
-    const axiosSecure = UseaxiousSecure();
+    const axiosSecure = UseaxiosPublic();
 
   const { data: announcements = [], isLoading, isError } = useQuery({
     queryKey: ['announcements'],

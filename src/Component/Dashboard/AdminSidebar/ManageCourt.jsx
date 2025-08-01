@@ -1,13 +1,13 @@
 // 📁 src/Component/Dashboard/AdminSidebar/ManageCourt.jsx
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { UseaxiousSecure } from "../../hooks/UseaxiousSecure";
+import { UseaxiosPublic } from "../../hooks/UseAxiosPublic";
 import Swal from "sweetalert2";
 import Loading from "../../Loading/Loading";
 import { uploadToCloudinary } from "../../../utils/cloudinaryUpload";
 
 export const ManageCourt = () => {
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const [newCourt, setNewCourt] = useState({ name: "", type: "", price: "", slots: "", image: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Fallback function to convert image to base64 data URL

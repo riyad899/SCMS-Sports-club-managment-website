@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "../../Component/hooks/AuthContext";
 
-import { UseAxiosPublic } from "../../Component/hooks/UseAxiosPublic";
+
 import CourtBookingModal from "../../Component/CourtBookingModal/CourtBookingModal";
 import Loading from "../../Component/Loading/Loading";
 import { useNavigate, useLocation } from "react-router";
+import { UseaxiosPublic } from "../../Component/hooks/UseAxiosPublic";
 
 const Courts = () => {
   const [courts, setCourts] = useState([]);
@@ -18,7 +19,7 @@ const Courts = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const axiosSecure = UseAxiosPublic();
+  const axiosSecure = UseaxiosPublic();
 
   // Pagination settings
   const cardPageSize = 6;

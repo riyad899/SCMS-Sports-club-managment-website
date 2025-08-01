@@ -18,7 +18,6 @@ import { Pendingbooks } from "../Component/Dashboard/AdminSidebar/Pendingbooks";
 import { ManageMembers } from "../Component/Dashboard/AdminSidebar/ManageMembers";
 import { AllUsers } from "../Component/Dashboard/AdminSidebar/AllUsers";
 import { ManageCourt } from "../Component/Dashboard/AdminSidebar/ManageCourt";
-import ManageCoupons from "../Component/Dashboard/AdminSidebar/ManageCupon,";
 import { ManageAnnouncement } from "../Component/Dashboard/AdminSidebar/ManageAnnouncement";
 import { PendingBookMem } from "../Component/Dashboard/MemberSidebar/PendingBookMem";
 import { PaymentPage } from "../Component/Dashboard/MemberSidebar/PaymentPage";
@@ -148,10 +147,7 @@ export const router = createBrowserRouter([
                 path: "manage-courts",
                 element: <ManageCourt />,
               },
-              {
-                path: "manage-coupons",
-                element: <ManageCoupons />,
-              },
+             
             ],
           },
         ],

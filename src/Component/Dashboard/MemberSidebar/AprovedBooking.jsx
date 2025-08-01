@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import { useAuth } from '../../hooks/AuthContext';
 import Swal from 'sweetalert2';
 import Loading from '../../Loading/Loading';
 
 export const AprovedBooking = () => {
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const [isCancelling, setIsCancelling] = useState(null);

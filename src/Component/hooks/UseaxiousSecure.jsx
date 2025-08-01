@@ -2,14 +2,14 @@ import axios from 'axios'
 import { useAuth } from './AuthContext';
 
 const axiousSecure = axios.create({
-    baseURL: `https://sports-club-backend-mwe3s4o3v-riyad899s-projects.vercel.app`,
+    baseURL: `https://sports-kappa.vercel.app`, // Update to your backend URL
     withCredentials: true
 });
 
 // Set up interceptors once
 let isInterceptorSet = false;
 
-export const UseaxiousSecure = () => {
+export const UseAxiosSecure = () => {
   const { user, logOut } = useAuth();
 
   // Only set up interceptors once to avoid duplicates

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import { useAuth } from '../../hooks/AuthContext';
 
 export const ConfirmedBookings = () => {
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const { user } = useAuth();
 
   // Fetch payments data for the current user (Member view)

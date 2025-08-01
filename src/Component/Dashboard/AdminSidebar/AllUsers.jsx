@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { UseaxiousSecure } from '../../hooks/UseaxiousSecure';
+import { UseaxiosPublic } from '../../hooks/UseAxiosPublic';
 import Loading from '../../Loading/Loading';
 
 
 export const AllUsers = () => {
-  const axiosSecure = UseaxiousSecure();
+  const axiosSecure = UseaxiosPublic();
   const [searchTerm, setSearchTerm] = useState('');
 
   const {
