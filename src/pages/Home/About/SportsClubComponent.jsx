@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router";
+import Swal from 'sweetalert2';
 import {
   ShoppingCart,
   RefreshCw,
@@ -9,6 +11,48 @@ import {
 } from 'lucide-react';
 
 const SportsClubComponent = () => {
+  const navigate = useNavigate();
+
+  const handleConnect = (user) => {
+    Swal.fire({
+      title: 'Connect with ' + user.name,
+      html: `
+        <div style="text-align: center;">
+          <div style="font-size: 18px; margin-bottom: 10px;">
+            <strong>${user.role}</strong>
+          </div>
+          <p>Would you like to connect with ${user.name}?</p>
+        </div>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Connect',
+      cancelButtonText: 'Maybe Later',
+      confirmButtonColor: '#162E50',
+      cancelButtonColor: '#6c757d'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Connection Sent!',
+          text: `Your connection request has been sent to ${user.name}`,
+          icon: 'success',
+          confirmButtonText: 'Great!',
+          confirmButtonColor: '#162E50',
+          timer: 2000,
+          timerProgressBar: true
+        });
+      }
+    });
+  };
+
+  const handleSignUp = () => {
+    navigate('/register');
+  };
+
+  const handleExplorePrograms = () => {
+    navigate('/courts');
+  };
+
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Decorative background */}
@@ -18,7 +62,7 @@ const SportsClubComponent = () => {
         <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-[#162E50]/10 rounded-full blur-2xl"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-14">
           {/* Mobile App mockup */}
           <div className="flex-1 flex justify-center lg:justify-start">
@@ -80,7 +124,10 @@ const SportsClubComponent = () => {
                               <p className="text-sm text-gray-600">{user.role}</p>
                             </div>
                           </div>
-                          <button className="btn btn-sm bg-[#162E50] text-white border-none hover:bg-[#1c3a66]">
+                          <button 
+                            className="btn btn-sm bg-[#162E50] text-white border-none hover:bg-[#1c3a66]"
+                            onClick={() => handleConnect(user)}
+                          >
                             Connect
                           </button>
                         </div>
@@ -114,10 +161,16 @@ const SportsClubComponent = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <button className="btn btn-primary bg-[#162E50] border-none text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-[#1c3a66] transition-all duration-300">
+              <button 
+                className="btn btn-primary bg-[#162E50] border-none text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-[#1c3a66] transition-all duration-300"
+                onClick={handleSignUp}
+              >
                 Sign Up Now
               </button>
-              <button className="btn btn-outline border-[#162E50] text-[#162E50] hover:bg-[#162E50] hover:text-white px-8 py-3 rounded-full font-semibold text-lg">
+              <button 
+                className="btn btn-outline border-[#162E50] text-[#162E50] hover:bg-[#162E50] hover:text-white px-8 py-3 rounded-full font-semibold text-lg"
+                onClick={handleExplorePrograms}
+              >
                 Explore Programs
               </button>
             </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../Component/hooks/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router';
-import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import Swal from 'sweetalert2';
 
 export const Login = () => {
@@ -41,8 +42,7 @@ export const Login = () => {
         icon: 'success',
         title: 'Login Successful!',
         text: 'Welcome back!',
-        timer: 2000,
-        showConfirmButton: false
+        confirmButtonColor: "#162E50",
       });
 
       navigate(from, { replace: true });
@@ -65,8 +65,7 @@ export const Login = () => {
         icon: 'success',
         title: 'Login Successful!',
         text: 'Welcome back!',
-        timer: 2000,
-        showConfirmButton: false
+        confirmButtonColor: "#162E50",
       });
 
       navigate(from, { replace: true });
@@ -98,125 +97,84 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link
-              to="/register"
-              className="font-medium text-primary hover:text-primary/80 transition-colors"
-            >
-              create a new account
-            </Link>
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-[#f0f4f8]">
+      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
+        <h2 className="text-3xl font-bold text-center text-[#162E50] mb-6">Login</h2>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-              >
-                {showPassword ? (
-                  <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                ) : (
-                  <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                )}
-              </button>
-            </div>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="label"><span className="label-text">Email</span></label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
           </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
-              <span className="block sm:inline">{error}</span>
-            </div>
-          )}
 
           <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Signing in...
-                </div>
-              ) : (
-                'Sign in'
-              )}
-            </button>
-          </div>
-
-          <div className="mt-6">
+            <label className="label"><span className="label-text">Password</span></label>
             <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input input-bordered w-full pr-10"
+                required
+              />
               <button
                 type="button"
-                onClick={handleGoogleLogin}
-                disabled={loading}
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                onClick={() => setShowPassword((prev) => !prev)}
+                tabIndex={-1}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                <FaGoogle className="h-5 w-5 text-red-500 mr-2" />
-                Sign in with Google
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
           </div>
 
-          <div className="text-center">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-primary hover:text-primary/80 transition-colors"
-            >
-              Forgot your password?
-            </Link>
-          </div>
+          <button
+            type="submit"
+            className="btn btn-primary w-full bg-[#162E50] border-none hover:bg-[#1c3a66]"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
         </form>
+
+        {/* Google Sign In Button */}
+        <div className="mt-4">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn w-full flex items-center justify-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-100"
+            disabled={loading}
+          >
+            <FcGoogle className="text-xl" />
+            Sign in with Google
+          </button>
+        </div>
+
+        <p className="text-sm mt-4 text-center">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-[#162E50] font-semibold hover:underline">
+            Register
+          </Link>
+        </p>
+        
+        <div className="text-center mt-2">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-[#162E50] hover:underline"
+          >
+            Forgot your password?
+          </Link>
+        </div>
       </div>
     </div>
   );

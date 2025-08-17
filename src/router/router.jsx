@@ -25,6 +25,8 @@ import { PaymentHistory } from "../Component/Dashboard/MemberSidebar/PaymentHist
 import { ConfirmedBookings } from "../Component/Dashboard/AdminSidebar/ConfirmedBookings";
 import { AprovedBooking } from "../Component/Dashboard/MemberSidebar/AprovedBooking";
 import Error from "../pages/Error/Error";
+import AllEvents from "../pages/Events/AllEvents";
+import Payment from "../pages/Payment/Payment";
 
 
 
@@ -50,6 +52,14 @@ export const router = createBrowserRouter([
       {
         path: "/courts",
         element: <Courts />
+      },
+      {
+        path: "/events",
+        element: <AllEvents />
+      },
+      {
+        path: "/payment",
+        element: <Payment />
       },
       {
         path: "/dashboard",
